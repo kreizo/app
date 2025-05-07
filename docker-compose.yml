@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    command: python3 -u app.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    links:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mongo:4
+    hostname: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=task_db
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - 27017:27017
+    volumes:
+      - db-volume:/data/db
+    networks:
+      - app-network
+
+volumes:
+  db-volume:
+
+networks:
+  app-network:
